@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
-from .user import UserRead
+from typing import Optional
 
 class TeamCreate(BaseModel):
     name: str = Field(max_length=100)
