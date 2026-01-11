@@ -1,59 +1,30 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
+from sqlmodel import Session
 from app.core.db import get_session
-from app.models import TeamMember, User, Team
+from app.repositories.member_repository import MemberRepository
 from app.schemas import MemberCreate, MemberRead
+from app.exceptions import NotFoundError
 
 router = APIRouter(prefix="/members", tags=["members"])
 
 @router.post("/", response_model=MemberRead)
 def add_member(member: MemberCreate, session: Session = Depends(get_session)):
-    # Verificar se a equipe existe
-    team = session.get(Team, member.team_id)
-    if not team:
-        raise HTTPException(status_code=404, detail="Team not found")
-    
-    # Verificar se o usuário existe
-    user = session.get(User, member.user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    # Verificar se o usuário já está em alguma equipe
-    existing_member = session.exec(
-        select(TeamMember).where(TeamMember.user_id == member.user_id)
-    ).first()
-    if existing_member:
-        raise HTTPException(status_code=400, detail="User is already a member of another team")
-    
-    # Adicionar membro
-    db_member = TeamMember(team_id=member.team_id, user_id=member.user_id)
-    session.add(db_member)
-    session.commit()
-    session.refresh(db_member)
-    return db_member
+    repo = MemberRepository(session)
+    try:
+        db_member = repo.add_member(team_id=member.team_id, user_id=member.user_id)
+        return db_member
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/{team_id}/{user_id}")
 def remove_member(team_id: int, user_id: int, session: Session = Depends(get_session)):
-    # Verificar se a equipe existe
-    team = session.get(Team, team_id)
-    if not team:
-        raise HTTPException(status_code=404, detail="Team not found")
-    
-    # Verificar se o usuário é o líder (não permitir remover líder)
-    if team.leader_id == user_id:
-        raise HTTPException(status_code=400, detail="Cannot remove the team leader")
-    
-    # Verificar se o membro existe na equipe
-    member = session.exec(
-        select(TeamMember).where(
-            TeamMember.team_id == team_id,
-            TeamMember.user_id == user_id
-        )
-    ).first()
-    if not member:
-        raise HTTPException(status_code=404, detail="Member not found in this team")
-    
-    # Remover membro
-    session.delete(member)
-    session.commit()
-    return {"message": "Member removed successfully"}
+    repo = MemberRepository(session)
+    try:
+        repo.remove_member(team_id=team_id, user_id=user_id)
+        return {"message": "Member removed successfully"}
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
