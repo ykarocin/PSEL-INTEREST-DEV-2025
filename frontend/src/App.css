@@ -674,3 +674,142 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, var(--orange-light), var(--orange-primary));
 }
+
+/* Main Page Styles */
+.main-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.hero-section h1 {
+  margin-bottom: 1rem;
+  color: var(--orange-primary);
+  font-size: 2.5rem;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.stats-section {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  border: 1px solid var(--orange-primary);
+  min-width: 150px;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--orange-primary);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.actions-section {
+  margin-bottom: 3rem;
+}
+
+.actions-section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--orange-primary);
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.action-button {
+  background: var(--orange-primary);
+  color: var(--bg-dark);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.action-button:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+}
+
+.button-icon {
+  font-size: 1.2rem;
+}
+
+.features-section {
+  margin-bottom: 2rem;
+}
+
+.features-section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--orange-primary);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  border: 1px solid var(--orange-primary);
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  color: var(--orange-primary);
+  margin-bottom: 1rem;
+}
+
+.feature-card p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
