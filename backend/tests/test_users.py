@@ -7,6 +7,11 @@ def test_create_user(client: TestClient):
     assert data["name"] == "João Silva"
     assert "id" in data
 
+def test_create_user_without_name(client):
+    response = client.post("/api/v1/users/",json={"name": ""})
+    assert response.status_code == 400
+    assert response.json()["error_code"] == "USER_NAME_REQUIRED"
+
 def test_list_users(client: TestClient):
     # Criar um usuário primeiro
     client.post("/api/v1/users/", json={"name": "Maria"})
