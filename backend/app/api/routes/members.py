@@ -13,6 +13,12 @@ def add_member(member: MemberCreate, session: Session = Depends(get_session)):
     db_member = repo.add_member(team_id=member.team_id, user_id=member.user_id)
     return db_member
 
+@router.get("/", response_model=List[MemberRead])
+def list_members(team_id: int, session: Session = Depends(get_session)):
+    repo = MemberRepository(session)
+    members = repo.get_members_by_team(team_id=team_id)
+    return members
+
 @router.delete("/{team_id}/{user_id}")
 def remove_member(team_id: int, user_id: int, session: Session = Depends(get_session)):
     repo = MemberRepository(session)
