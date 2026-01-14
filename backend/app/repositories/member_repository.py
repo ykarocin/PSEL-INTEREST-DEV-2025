@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
 from app.models import TeamMember, User, Team
-from app.exceptions import NotFoundError
+from app.exceptions import NotFoundError, BusinessRuleError
 
 class MemberRepository:
     def __init__(self, session: Session):
@@ -10,17 +10,17 @@ class MemberRepository:
         # Verificações
         team = self.session.get(Team, team_id)
         if not team:
-            raise NotFoundError("Team not found")
+            raise NotFoundError("TEAM_NOT_FOUND")
 
         user = self.session.get(User, user_id)
         if not user:
-            raise NotFoundError("User not found")
+            raise NotFoundError("USER_NOT_FOUND")
 
         existing_member = self.session.exec(
             select(TeamMember).where(TeamMember.user_id == user_id)
         ).first()
         if existing_member:
-            raise ValueError("User is already a member of another team")
+            raise BusinessRuleError("USER_ALREADY_BELONGS_TO_A_TEAM")
 
         member = TeamMember(team_id=team_id, user_id=user_id)
         self.session.add(member)
@@ -31,10 +31,10 @@ class MemberRepository:
     def remove_member(self, team_id: int, user_id: int) -> bool:
         team = self.session.get(Team, team_id)
         if not team:
-            raise NotFoundError("Team not found")
+            raise NotFoundError("TEAM_NOT_FOUND")
 
         if team.leader_id == user_id:
-            raise ValueError("Cannot remove the team leader")
+            raise BusinessRuleError("CANNOT_REMOVE_TEAM_LEADER")
 
         member = self.session.exec(
             select(TeamMember).where(
@@ -43,7 +43,7 @@ class MemberRepository:
             )
         ).first()
         if not member:
-            raise NotFoundError("Member not found in this team")
+            raise NotFoundError("MEMBER_NOT_FOUND")
 
         self.session.delete(member)
         self.session.commit()
