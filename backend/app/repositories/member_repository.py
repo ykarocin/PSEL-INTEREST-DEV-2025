@@ -28,6 +28,16 @@ class MemberRepository:
         self.session.refresh(member)
         return member
 
+    def get_members_by_team(self, team_id: int) -> list[TeamMember]:
+        team = self.session.get(Team, team_id)
+        if not team:
+            raise NotFoundError("TEAM_NOT_FOUND")
+
+        members = self.session.exec(
+            select(TeamMember).where(TeamMember.team_id == team_id)
+        ).all()
+        return list(members)
+    
     def remove_member(self, team_id: int, user_id: int) -> bool:
         team = self.session.get(Team, team_id)
         if not team:
