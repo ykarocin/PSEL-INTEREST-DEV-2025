@@ -14,9 +14,9 @@ def test_create_team(client: TestClient):
 def test_create_team_leader_not_found(client: TestClient):
     response = client.post("/api/v1/teams/", json={"name": "Equipe B", "leader_id": 999})
     assert response.status_code == 404
-    assert response.json()["detail"] == "Leader not found"
+    assert response.json()["error_code"] == "LEADER_NOT_FOUND"
 
-def test_create_team_leader_already_leading(client: TestClient):
+def test_create_team_leader_belongs_to_a_team(client: TestClient):
     # Criar usuário
     user1 = client.post("/api/v1/users/", json={"name": "User1"}).json()
     
@@ -26,7 +26,7 @@ def test_create_team_leader_already_leading(client: TestClient):
     # Tentar criar segunda equipe com mesmo líder
     response = client.post("/api/v1/teams/", json={"name": "Equipe2", "leader_id": user1["id"]})
     assert response.status_code == 400
-    assert response.json()["detail"] == "User is already leading another team"
+    assert response.json()["error_code"] == "USER_ALREADY_BELONGS_TO_A_TEAM"
 
 def test_list_teams(client: TestClient):
     # Criar usuário e equipe
@@ -56,7 +56,7 @@ def test_get_team(client: TestClient):
 def test_get_team_not_found(client: TestClient):
     response = client.get("/api/v1/teams/999")
     assert response.status_code == 404
-    assert response.json()["detail"] == "Team not found"
+    assert response.json()["error_code"] == "TEAM_NOT_FOUND"
 
 def test_update_team(client: TestClient):
     # Criar usuários e equipe
@@ -76,7 +76,7 @@ def test_update_team(client: TestClient):
 def test_update_team_not_found(client: TestClient):
     response = client.put("/api/v1/teams/999", json={"name": "Novo Nome"})
     assert response.status_code == 404
-    assert response.json()["detail"] == "Team not found"
+    assert response.json()["error_code"] == "TEAM_NOT_FOUND"
 
 def test_update_team_leader_not_found(client: TestClient):
     # Criar equipe
@@ -85,7 +85,7 @@ def test_update_team_leader_not_found(client: TestClient):
     
     response = client.put(f"/api/v1/teams/{team['id']}", json={"leader_id": 999})
     assert response.status_code == 404
-    assert response.json()["detail"] == "New leader not found"
+    assert response.json()["error_code"] == "NEW_LEADER_NOT_FOUND"
 
 def test_update_team_leader_already_leading(client: TestClient):
     # Criar usuários
@@ -99,7 +99,7 @@ def test_update_team_leader_already_leading(client: TestClient):
     # Tentar mudar líder de team1 para user2 (que já lidera team2)
     response = client.put(f"/api/v1/teams/{team1['id']}", json={"leader_id": user2["id"]})
     assert response.status_code == 400
-    assert response.json()["detail"] == "User is already leading another team"
+    assert response.json()["error_code"] == "USER_IS_ALREADY_LEADING_ANOTHER_TEAM"
 
 def test_delete_team(client: TestClient):
     # Criar equipe
@@ -114,8 +114,9 @@ def test_delete_team(client: TestClient):
     # Verificar se foi deletada
     get_response = client.get(f"/api/v1/teams/{team['id']}")
     assert get_response.status_code == 404
+    assert get_response.json()["error_code"] == "TEAM_NOT_FOUND"
 
 def test_delete_team_not_found(client: TestClient):
     response = client.delete("/api/v1/teams/999")
     assert response.status_code == 404
-    assert response.json()["detail"] == "Team not found"
+    assert response.json()["error_code"] == "TEAM_NOT_FOUND"

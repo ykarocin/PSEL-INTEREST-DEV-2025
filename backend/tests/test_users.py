@@ -31,7 +31,7 @@ def test_get_user(client: TestClient):
 def test_get_user_not_found(client: TestClient):
     response = client.get("/api/v1/users/999")
     assert response.status_code == 404
-    assert response.json()["detail"] == "User not found"
+    assert response.json()["error_code"] == "USER_NOT_FOUND"
 
 def test_update_user(client: TestClient):
     # Criar usuário
@@ -48,7 +48,7 @@ def test_update_user(client: TestClient):
 def test_update_user_not_found(client: TestClient):
     response = client.put("/api/v1/users/999", json={"name": "Novo Nome"})
     assert response.status_code == 404
-    assert response.json()["detail"] == "User not found"
+    assert response.json()["error_code"] == "USER_NOT_FOUND"
 
 def test_delete_user(client: TestClient):
     # Criar usuário
@@ -63,8 +63,9 @@ def test_delete_user(client: TestClient):
     # Verificar se foi deletado
     get_response = client.get(f"/api/v1/users/{user_id}")
     assert get_response.status_code == 404
+    assert get_response.json()["error_code"] == "USER_NOT_FOUND"
 
 def test_delete_user_not_found(client: TestClient):
     response = client.delete("/api/v1/users/999")
     assert response.status_code == 404
-    assert response.json()["detail"] == "User not found"
+    assert response.json()["error_code"] == "USER_NOT_FOUND"
