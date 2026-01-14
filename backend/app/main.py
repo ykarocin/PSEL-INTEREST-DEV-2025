@@ -5,6 +5,8 @@ from starlette.middleware.cors import CORSMiddleware
 
 from app.api.main import api_router
 from app.core.config import settings
+from app.core.exception_handlers import domain_exception_handler
+from app.exceptions import DomainError
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
@@ -31,3 +33,4 @@ if settings.all_cors_origins:
     )
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
+app.add_exception_handler(DomainError, domain_exception_handler)
