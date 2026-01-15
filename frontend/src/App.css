@@ -860,3 +860,38 @@ body {
   padding: 2rem;
   transition: margin-left 0.3s ease;
 }
+
+/* Header Styles */
+.compact-header {
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--orange-primary);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: var(--orange-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background 0.3s;
+}
+
+.menu-toggle:hover {
+  background: var(--accent-glow);
+}
