@@ -13,7 +13,7 @@ const QuestPage: React.FC = () => {
     return (
       <div className="container error-container">
         <h2>Quest não encontrada!</h2>
-        <button onClick={() => navigate('/')} className="back-button">
+        <button onClick={() => navigate('/landing')} className="back-button">
           Voltar ao Mapa
         </button>
       </div>
@@ -22,7 +22,7 @@ const QuestPage: React.FC = () => {
 
   return (
     <div className="quest-page container">
-      <QuestDetail quest={quest} onBack={() => navigate('/')} />
+      <QuestDetail quest={quest} onBack={() => navigate('/landing')} />
     </div>
   )
 }
