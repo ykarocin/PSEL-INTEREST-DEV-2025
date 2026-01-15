@@ -895,3 +895,141 @@ body {
 .menu-toggle:hover {
   background: var(--accent-glow);
 }
+
+/* Users and Teams Pages */
+.users-page, .teams-page {
+  padding: 2rem;
+}
+
+.create-user, .create-team {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.create-user input, .create-team input, .create-team .custom-select {
+  padding: 0.5rem;
+  border: 1px solid var(--orange-primary);
+  border-radius: 0.25rem;
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.select-trigger {
+  padding: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--orange-primary);
+  border-radius: 0.25rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.select-trigger:hover {
+  background: rgba(255, 140, 66, 0.1);
+}
+
+.select-arrow {
+  color: var(--orange-primary);
+  font-size: 0.8rem;
+}
+
+.select-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--orange-primary);
+  border-top: none;
+  border-radius: 0 0 0.25rem 0.25rem;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.select-option {
+  padding: 0.75rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  border-bottom: 1px solid rgba(255, 140, 66, 0.2);
+}
+
+.select-option:hover {
+  background: var(--accent-glow);
+}
+
+.select-option:last-child {
+  border-bottom: none;
+}
+
+.create-user button, .create-team button {
+  background: var(--orange-primary);
+  color: var(--bg-dark);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.create-user button:hover, .create-team button:hover {
+  background: var(--orange-light);
+}
+
+.error-message {
+  background: rgba(255, 59, 48, 0.1);
+  border: 1px solid #ff3b30;
+  color: #ff3b30;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.users-list, .teams-list {
+  list-style: none;
+}
+
+.users-list li, .teams-list li {
+  background: var(--bg-card);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team-link {
+  color: var(--orange-primary);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.team-link:hover {
+  text-decoration: underline;
+}
+
+.users-list button, .teams-list button {
+  background: var(--orange-primary);
+  color: var(--bg-dark);
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.users-list button:hover, .teams-list button:hover {
+  background: var(--orange-light);
+}
