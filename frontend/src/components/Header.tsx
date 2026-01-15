@@ -1,10 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onToggleSidebar: () => void
+}
+
+const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   return (
     <header className="compact-header">
       <div className="header-content">
+        <button className="menu-toggle" onClick={onToggleSidebar}>
+          ☰
+        </button>
         <Link to="/" className="logo-link">
           <div className="logo-compact">
             <span className="logo-icon">⚔️</span>
@@ -16,7 +23,7 @@ const Header: React.FC = () => {
         </Link>
         
         <nav className="header-nav">
-          <Link to="/" className="nav-link">Quests</Link>
+          <Link to="/landing" className="nav-link">Quests</Link>
           <a href="https://github.com/Joao-Marinho-Interest/Seletiva-Interest-Dev-2025" target="_blank" rel="noopener noreferrer" className="nav-link">
             GitHub
           </a>
